@@ -6,6 +6,9 @@ from utils import generate_manim_code
 
 app = FastAPI()
 
+# Get the absolute path to the server directory
+SERVER_DIR = os.path.dirname(os.path.abspath(__file__))
+
 
 class Prompt(BaseModel):
     text: str
@@ -18,18 +21,21 @@ def read_root():
 
 @app.post("/generate")
 async def generate_video(prompt: Prompt):
-    manim_code = generate_manim_code(prompt.text)
+    try:
+        manim_code = generate_manim_code(prompt.text)
 
-    # Save code to a temporary Python file
-    # filename = f"{uuid.uuid4()}.py"
-    path = os.path.join("render", "script.py")
-    with open(path, "w") as f:
-        f.write(manim_code)
+        # Save code to script.py in the render directory
+        script_path = os.path.join(SERVER_DIR, "render", "script.py")
+        with open(script_path, "w") as f:
+            f.write(manim_code)
 
-    # actually render
-    do()
-    # move the file to the right place
-    clean()
+        # Render the video
+        do()
 
-    # Return the path or URL to the rendered video
-    return {"video_url": "/render/ouput/script.mp4"}
+        # Move the file to the output directory
+        clean()
+
+        # Return the correct path to the rendered video
+        return {"video_url": "/render/output/script.mp4"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

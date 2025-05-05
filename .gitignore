@@ -4,3 +4,4 @@ output
 script
 *.mp4
 script.py
+.env
