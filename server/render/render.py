@@ -3,6 +3,8 @@ import subprocess
 
 filename = "script"
 
+os.chdir("render")
+
 
 def do():
     try:
@@ -25,4 +27,4 @@ def clean():
 
 
 do()
-# clean()
+clean()

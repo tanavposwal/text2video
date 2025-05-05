@@ -2,54 +2,35 @@ from manim import *
 
 class Test(Scene):
     def construct(self):
-        # Create a simple graph
-        axes = Axes(
-            x_range=[0, 5, 1],
-            y_range=[0, 5, 1],
-            x_length=5,
-            y_length=5,
-            axis_config={"include_numbers": True},
-        )
-        labels = axes.get_axis_labels(x_label="x", y_label="f(x)")
+        # Define the circle
+        circle = Circle(radius=2, color=BLUE)
+        self.play(Create(circle))
 
-        # Define a function
-        def func(x):
-            return 0.5 * (x**2)
+        # Define the square
+        square = Square(side_length=3, color=GREEN)
+        square.move_to(RIGHT * 3)
+        self.play(Create(square))
 
-        # Create the graph of the function
-        graph = axes.plot(func, x_range=[0, 4], color=BLUE)
-
-        # Create a dot on the graph
-        dot = Dot(axes.c2p(2, func(2)), color=RED)
-
-        # Create a label for the dot
-        dot_label = MathTex("(2, f(2))", color=RED).next_to(dot, UP)
-
-        # Group the graph, dot, and label
-        group = VGroup(axes, labels, graph, dot, dot_label)
-
-        # Play the animation
-        self.play(Create(axes), Write(labels))
-        self.play(Create(graph))
-        self.play(FadeIn(dot), Write(dot_label))
-        self.wait(2)
-        self.play(group.animate.shift(LEFT * 3))
-
-        # Create a square
-        square = Square(side_length=2, color=GREEN).shift(RIGHT * 3)
+        # Define the triangle
+        triangle = Triangle(color=RED)
+        triangle.move_to(LEFT * 3)
+        self.play(Create(triangle))
+        
+        # Create a VGroup and shift it down
+        group = VGroup(circle, square, triangle)
+        self.play(group.animate.shift(DOWN))
 
         # Write some text
-        text = Text("Hello, Manim!", color=WHITE).next_to(square, UP)
-
-        # Play the animation
-        self.play(Create(square), Write(text))
-        self.wait(2)
-
-        # Transform the square into a circle
-        circle = Circle(radius=1, color=YELLOW).shift(RIGHT * 3)
-        self.play(Transform(square, circle))
+        text = Text("Manim is Awesome!", color=YELLOW)
+        text.move_to(UP * 3)
+        self.play(Write(text))
+        
+        #Transform circle into square
+        self.play(Transform(circle,square))
+        
+        # Wait for a few seconds
         self.wait(2)
 
         # Fade out everything
-        self.play(*[FadeOut(mob) for mob in self.mobjects])
+        self.play(*[FadeOut(obj) for obj in self.mobjects])
         self.wait(1)
