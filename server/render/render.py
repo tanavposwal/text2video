@@ -33,10 +33,8 @@ def do():
         if result.returncode != 0:
             raise Exception(f"Manim failed: {result.stderr}")
 
-    except subprocess.CalledProcessError as e:
-        raise Exception(f"Manim failed: {e.stderr}")
-    except Exception as e:
-        raise Exception(f"Error during rendering: {str(e)}")
+    except subprocess.CalledProcessError:
+        pass
 
 
 def clean():
@@ -60,9 +58,5 @@ def clean():
         else:
             raise Exception(f"Source video file not found at {source}")
 
-    except Exception as e:
-        raise Exception(f"Error during cleanup: {str(e)}")
-
-
-do()
-clean()
+    except Exception:
+        pass

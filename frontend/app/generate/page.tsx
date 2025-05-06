@@ -5,6 +5,8 @@ import Link from "next/link";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import axios from "axios";
+import Video from "@/components/video";
 
 export default function GeneratePage() {
   const [prompt, setPrompt] = useState("");
@@ -17,24 +19,32 @@ export default function GeneratePage() {
     setIsGenerating(true);
 
     // Simulate video generation
-    setTimeout(() => {
-      // In a real app, this would be an API call to generate the video
-      setVideoUrl("/placeholder.svg?height=480&width=640");
-      setIsGenerating(false);
-    }, 2000);
+
+    const response = await axios("http://127.0.0.1:8000/generate", {
+      method: "POST",
+      data: {
+        text: prompt,
+      },
+    });
+
+    console.log(response.data);
+    setVideoUrl("http://127.0.0.1:8000" + response.data.video_url);
+    setIsGenerating(false);
   };
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col max-w-7xl mx-auto">
       <main className="flex-1">
-        <div className="container max-w-4xl px-4 py-8 md:py-12">
+        <div className="container max-w-7xl px-4 py-8 md:py-12">
           <div className="mb-8">
-            <Link
-              href="/"
-              className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50">
-              <ArrowLeft className="mr-1 h-4 w-4" />
-              Back to Home
-            </Link>
+            <Button asChild variant={"ghost"}>
+              <Link
+                href="/"
+                className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50">
+                <ArrowLeft className="mr-1 h-4 w-4" />
+                Back to Home
+              </Link>
+            </Button>
           </div>
 
           <div className="space-y-6">
@@ -71,51 +81,7 @@ export default function GeneratePage() {
               </Button>
             </div>
 
-            {videoUrl && (
-              <div className="space-y-4">
-                <h2 className="text-xl font-bold">Your Generated Video</h2>
-                <div className="overflow-hidden rounded-lg border bg-black aspect-video flex items-center justify-center">
-                  <video
-                    src={videoUrl}
-                    controls
-                    className="w-full h-full object-contain">
-                    Your browser does not support the video tag.
-                  </video>
-
-                  {/* Fallback for placeholder */}
-                  {videoUrl.includes("placeholder") && (
-                    <div className="absolute inset-0 flex flex-col items-center justify-center text-white bg-gray-900">
-                      <div className="relative w-full h-full">
-                        {/* Mathematical animation placeholder */}
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="w-20 h-20 rounded-full border-4 border-blue-500 animate-pulse"></div>
-                        </div>
-                        <div className="absolute top-1/4 left-1/4 w-12 h-12 rounded-full bg-purple-500 animate-bounce"></div>
-                        <div className="absolute bottom-1/3 right-1/3 w-16 h-16 rounded-full border-2 border-pink-500"></div>
-
-                        {/* Text elements that would animate in a real video */}
-                        <div className="absolute top-1/4 right-1/4 bg-black bg-opacity-70 p-2 rounded">
-                          <p className="text-white font-mono">
-                            e<sup>iπ</sup> + 1 = 0
-                          </p>
-                        </div>
-                        <div className="absolute bottom-1/4 left-1/3 bg-black bg-opacity-70 p-2 rounded">
-                          <p className="text-white font-mono">∫ f(x) dx</p>
-                        </div>
-                      </div>
-                      <p className="text-center max-w-md mt-4 bg-black bg-opacity-70 p-2 rounded">
-                        Your mathematical animation would appear here. This is a
-                        placeholder showing the style of 3Blue1Brown videos.
-                      </p>
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex justify-end">
-                  <Button variant="outline">Download Video</Button>
-                </div>
-              </div>
-            )}
+            {videoUrl && <Video videoUrl={videoUrl} />}
           </div>
         </div>
       </main>

@@ -1,36 +1,36 @@
 from manim import *
 
-class Test(Scene):
+class HelloCircle(Scene):
     def construct(self):
-        # Define the circle
         circle = Circle(radius=2, color=BLUE)
+        text = Text("Hello", font_size=48)
+        text.move_to(circle.get_center())
+
         self.play(Create(circle))
-
-        # Define the square
-        square = Square(side_length=3, color=GREEN)
-        square.move_to(RIGHT * 3)
-        self.play(Create(square))
-
-        # Define the triangle
-        triangle = Triangle(color=RED)
-        triangle.move_to(LEFT * 3)
-        self.play(Create(triangle))
-        
-        # Create a VGroup and shift it down
-        group = VGroup(circle, square, triangle)
-        self.play(group.animate.shift(DOWN))
-
-        # Write some text
-        text = Text("Manim is Awesome!", color=YELLOW)
-        text.move_to(UP * 3)
         self.play(Write(text))
-        
-        #Transform circle into square
-        self.play(Transform(circle,square))
-        
-        # Wait for a few seconds
-        self.wait(2)
+        self.wait(1)
 
-        # Fade out everything
-        self.play(*[FadeOut(obj) for obj in self.mobjects])
+        # Animate the text moving around the circle
+        self.play(
+            text.animate.move_to(circle.point_from_proportion(0)),
+            run_time=1
+        )
+        self.play(
+            text.animate.move_to(circle.point_from_proportion(0.25)),
+            run_time=1
+        )
+        self.play(
+            text.animate.move_to(circle.point_from_proportion(0.5)),
+            run_time=1
+        )
+        self.play(
+            text.animate.move_to(circle.point_from_proportion(0.75)),
+            run_time=1
+        )
+        self.play(
+            text.animate.move_to(circle.point_from_proportion(1)),
+            run_time=1
+        )
+        self.wait(1)
+        self.play(FadeOut(circle, text))
         self.wait(1)
