@@ -16,7 +16,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 # server static files
-app.mount("/output", StaticFiles(directory="render/output"), name="render")
+app.mount("/render/output", StaticFiles(directory="render/output"), name="render")
 
 # Get the absolute path to the server directory
 SERVER_DIR = os.path.dirname(os.path.abspath(__file__))

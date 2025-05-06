@@ -17,6 +17,7 @@ export default function GeneratePage() {
     if (!prompt.trim()) return;
 
     setIsGenerating(true);
+    setVideoUrl("");
 
     // Simulate video generation
 
@@ -28,7 +29,7 @@ export default function GeneratePage() {
     });
 
     console.log(response.data);
-    setVideoUrl("http://127.0.0.1:8000" + response.data.video_url);
+    setVideoUrl("http://127.0.0.1:8000/render" + response.data.video_url);
     setIsGenerating(false);
   };
 

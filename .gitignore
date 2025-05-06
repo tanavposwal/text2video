@@ -3,5 +3,5 @@ media
 output
 script
 *.mp4
-script.py
+render/script.py
 .env
