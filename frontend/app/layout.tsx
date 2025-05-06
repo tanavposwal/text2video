@@ -16,7 +16,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className + " dark mx-auto w-full border"}>
+      <body
+        className={
+          inter.className +
+          " dark mx-auto w-full border flex items-center justify-center"
+        }>
         {children}
       </body>
     </html>
