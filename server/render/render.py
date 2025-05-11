@@ -27,6 +27,8 @@ def do(file_name):
         os.chdir(original_dir)
 
         if result.returncode != 0:
+            os.remove(os.path.join(RENDER_DIR, "code", f"{file_name}.py"))
+            os.remove(os.path.join(RENDER_DIR, "media", "videos", file_name))
             raise Exception(f"Manim failed: {result.stderr}")
 
     except subprocess.CalledProcessError as e:
@@ -51,7 +53,7 @@ def clean(file_name):
         # Move the file
         if os.path.exists(source):
             shutil.move(source, destination)
-            os.removedirs(os.path.join(RENDER_DIR, "media", "videos", file_name))
+            os.remove(os.path.join(RENDER_DIR, "media", "videos", file_name))
         else:
             raise Exception(f"Source video file not found at {source}")
 

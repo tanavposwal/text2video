@@ -12,7 +12,11 @@ export default function Video({ videoUrl }: { videoUrl: string }) {
       </div>
 
       <div className="flex justify-end">
-        <Button variant="outline">Download Video</Button>
+        <Button variant="outline" asChild>
+          <a href={videoUrl} download={true}>
+            Download Video
+          </a>
+        </Button>
       </div>
     </div>
   );

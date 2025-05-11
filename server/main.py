@@ -52,6 +52,6 @@ async def generate_video(prompt: Prompt):
         clean(file_name)
 
         # Return the correct path to the rendered video
-        return {"video_url": "/output/" + file_name + ".mp4"}
+        return {"video_url": "/render/output/" + file_name + ".mp4"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

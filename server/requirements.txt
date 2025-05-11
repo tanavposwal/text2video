@@ -1,0 +1,4 @@
+fastapi
+manim
+google-generativeai
+uuid

@@ -29,14 +29,14 @@ export default function GeneratePage() {
     });
 
     console.log(response.data);
-    setVideoUrl("http://127.0.0.1:8000/render" + response.data.video_url);
+    setVideoUrl("http://127.0.0.1:8000" + response.data.video_url);
     setIsGenerating(false);
   };
 
   return (
     <div className="flex min-h-screen flex-col max-w-7xl mx-auto">
       <main className="flex-1">
-        <div className="container max-w-7xl px-4 py-8 md:py-12">
+        <div className="container max-w-5xl px-4 py-8 md:py-12">
           <div className="mb-8">
             <Button asChild variant={"ghost"}>
               <Link

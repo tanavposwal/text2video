@@ -8,7 +8,7 @@ def generate_manim_code(text):
     try:
         response = client.models.generate_content(
             model="gemini-2.0-flash",
-            contents=f"""You are a model that generates the python code with manim module for an animation. 
+            contents=f"""You are a model that generates the python code with manim module for an animation. You only write valid code only.
             *When generating code, always avoid using /```/python and /```/*
             *Do not include any markdown formatting, backticks, or language identifiers in your response*
             *Return only the raw Python code*
