@@ -1,4 +1,5 @@
 import os
+import uuid
 from pydantic import BaseModel
 from render.render import do, clean
 from utils import generate_manim_code
@@ -33,23 +34,24 @@ def read_root():
 
 @app.post("/generate")
 async def generate_video(prompt: Prompt):
+    file_name = str(uuid.uuid4())
     try:
         manim_code = generate_manim_code(prompt.text)
         # Remove ticks and laguage identifiers
         manim_code = manim_code.replace("```python", "").replace("```", "")
 
         # Save code to script.py in the render directory
-        script_path = os.path.join(SERVER_DIR, "render", "script.py")
+        script_path = os.path.join(SERVER_DIR, "render", "code", f"{file_name}.py")
         with open(script_path, "w") as f:
             f.write(manim_code)
 
         # Render the vide
-        do()
+        do(file_name)
 
         # Move the file to the output directory
-        clean()
+        clean(file_name)
 
         # Return the correct path to the rendered video
-        return {"video_url": "/output/script.mp4"}
+        return {"video_url": "/output/" + file_name + ".mp4"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

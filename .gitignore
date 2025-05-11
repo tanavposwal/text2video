@@ -1,7 +1,7 @@
 __pycache__/
 media
 output
+code
 script
 *.mp4
-render/script.py
 .env

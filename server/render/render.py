@@ -4,16 +4,15 @@ import shutil
 
 # Get the absolute path to the render directory
 RENDER_DIR = os.path.dirname(os.path.abspath(__file__))
-filename = "script"
 
 
 def ensure_directories():
-    """Ensure all required directories exist"""
+    # Ensure all required directories exist
     output_dir = os.path.join(RENDER_DIR, "output")
     os.makedirs(output_dir, exist_ok=True)
 
 
-def do():
+def do(file_name):
     try:
         # Change to the render directory
         original_dir = os.getcwd()
@@ -21,10 +20,7 @@ def do():
 
         # Run manim
         result = subprocess.run(
-            ["manim", f"{filename}.py", "-o", f"{filename}.mp4"],
-            check=True,
-            capture_output=True,
-            text=True,
+            ["manim", f"code/{file_name}.py", "-o", f"{file_name}.mp4"]
         )
 
         # Change back to original directory
@@ -33,20 +29,20 @@ def do():
         if result.returncode != 0:
             raise Exception(f"Manim failed: {result.stderr}")
 
-    except subprocess.CalledProcessError:
-        pass
+    except subprocess.CalledProcessError as e:
+        print(e)
 
 
-def clean():
+def clean(file_name):
     try:
         # Ensure output directory exists
         ensure_directories()
 
         # Define source and destination paths
         source = os.path.join(
-            RENDER_DIR, "media", "videos", "script", "1080p60", f"{filename}.mp4"
+            RENDER_DIR, "media", "videos", file_name, "1080p60", f"{file_name}.mp4"
         )
-        destination = os.path.join(RENDER_DIR, "output", f"{filename}.mp4")
+        destination = os.path.join(RENDER_DIR, "output", f"{file_name}.mp4")
 
         # Remove existing output file if it exists
         if os.path.exists(destination):
@@ -55,6 +51,7 @@ def clean():
         # Move the file
         if os.path.exists(source):
             shutil.move(source, destination)
+            os.removedirs(os.path.join(RENDER_DIR, "media", "videos", file_name))
         else:
             raise Exception(f"Source video file not found at {source}")
 
