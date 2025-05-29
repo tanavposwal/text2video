@@ -20,7 +20,14 @@ def do(file_name):
 
         # Run manim
         result = subprocess.run(
-            ["manim", f"code/{file_name}.py", "-o", f"{file_name}.mp4"]
+            [
+                "manim",
+                f"code/{file_name}.py",
+                "-o",
+                f"{file_name}.mp4",
+                "-ql",
+                "--disable_caching",
+            ]
         )
 
         # Change back to original directory
@@ -31,7 +38,7 @@ def do(file_name):
             os.remove(os.path.join(RENDER_DIR, "media", "videos", file_name))
             raise Exception(f"Manim failed: {result.stderr}")
 
-    except subprocess.CalledProcessError as e:
+    except subprocess.TimeoutExpired as e:
         print(e)
 
 

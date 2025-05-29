@@ -1,7 +1,7 @@
 import os
 import uuid
 from pydantic import BaseModel
-from render.render import do, clean
+from server.render import do, clean
 from utils import generate_manim_code
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
